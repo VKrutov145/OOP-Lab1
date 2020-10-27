@@ -16,6 +16,7 @@ namespace Lab1
             colAmount = 0;
         }
 
+        Parser Parser1 = new Parser();
         /*public Data(int c, int r)
         {
 
@@ -62,6 +63,7 @@ namespace Lab1
         {
             Tuple<string, string> nullTuple = new Tuple<string, string>(null,null);
             List<Tuple<string, string>> newColumn = new List<Tuple<string, string>>();
+            
             for (int i = 0; i < rowAmount; i++)
             {
                 newColumn.Add(nullTuple);
@@ -103,6 +105,23 @@ namespace Lab1
         public int GetColAmount()
         {
             return colAmount;
+        }
+
+        public void ChangeCellExpression(int indexX, int indexY, string expStr)
+        {
+            double cellValue = Parser1.Evaluate(expStr);
+            Parser1.ChangeVars(indexX, indexY, cellValue);
+            gridData[indexX][indexY] = new Tuple<string, string>(expStr,Convert.ToString(cellValue));
+        }
+        
+        public string GetCellExpression(int indexX, int indexY)
+        {
+            return gridData[indexX][indexY].Item1;
+        }
+        
+        public string GetCellValue(int indexX, int indexY)
+        {
+            return gridData[indexX][indexY].Item2;
         }
     }
     

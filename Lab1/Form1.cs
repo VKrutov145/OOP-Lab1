@@ -6,6 +6,14 @@ namespace Lab1
 {
     public partial class Form1 : Form
     {
+        private enum FormatOfData
+        {
+            EXPRESSION,
+            VALUE
+        }
+
+        private FormatOfData FOD;
+        
         Data gridData1 = new Data();
         
         private const int INTERFACEOBJECTSHEIGHT = 50;
@@ -51,6 +59,9 @@ namespace Lab1
             btnStopEditingRowsColumns.Hide();
             
             txtbxExpression.Hide();
+
+            dataGridView1.AllowUserToAddRows = false;
+            FOD = FormatOfData.VALUE;
         }
 
         private void btnBackToStartMenu_Click(object sender, EventArgs e)
@@ -71,7 +82,8 @@ namespace Lab1
             lblNumberOfAddedDeletedRowsColumns.Show();
             txtbxNRowsColumns.Show();
             btnStopEditingRowsColumns.Show();
-            
+
+            btnExpValFormat.Height = INTERFACEOBJECTSHEIGHT;
         }
 
         private void btnNRows_Click(object sender, EventArgs e)
@@ -88,6 +100,12 @@ namespace Lab1
                     {
                         gridData1.AddRow();
                     }
+                    
+                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                    {
+                        dataGridView1.Rows[i].HeaderCell.Value = (i + 1).ToString();
+                    }
+
                     UpdateLabelAboutRowsAndColumns();
                 }
                 else
@@ -183,9 +201,6 @@ namespace Lab1
         }
         
         
-        
-        
-
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             HideRowsAndColumnsEditingPanel();
@@ -193,18 +208,41 @@ namespace Lab1
             btnAddRowColumn.Show();
             txtbxExpression.Show();
             txtbxExpression.Clear();
+            
+            btnExpValFormat.Height = INTERFACEOBJECTSHEIGHT/2;
 
             //dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = txtbxExpression.Text;
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            //txtbxExpression.Text = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-            // if (Data.cells[e.RowIndex][e.ColumnIndex].Expression != null)
-            //     if (!String.IsNullOrEmpty(Data.cells[e.RowIndex][e.ColumnIndex].Error))
-            //         dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Data.cells[e.RowIndex][e.ColumnIndex].Error;
-            //     else
-            //         dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = Data.cells[e.RowIndex][e.ColumnIndex].Value.ToString();
+            int rowIndex = e.RowIndex;
+            int colIndex = e.ColumnIndex;
+            if (dataGridView1.Rows[rowIndex].Cells[colIndex].Value != null)
+            {
+                string cellText = dataGridView1.Rows[rowIndex].Cells[colIndex].Value.ToString();
+                gridData1.ChangeCellExpression(colIndex,rowIndex,cellText);
+
+                dataGridView1.Rows[rowIndex].Cells[colIndex].Value = gridData1.GetCellValue(colIndex, rowIndex);
+            }
+        }
+
+        private void btnExpValFormat_Click(object sender, EventArgs e)
+        {
+            txtbxExpression.Hide();
+            btnExpValFormat.Height = INTERFACEOBJECTSHEIGHT;
+            btnAddRowColumn.Height = INTERFACEOBJECTSHEIGHT;
+
+            if (FOD == FormatOfData.VALUE)
+            {
+                btnExpValFormat.Text = "Show value format";
+                FOD = FormatOfData.EXPRESSION;
+            }
+            else
+            {
+                btnExpValFormat.Text = "Show expression format";
+                FOD = FormatOfData.VALUE;
+            }
         }
     }
 }

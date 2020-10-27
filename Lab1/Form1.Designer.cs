@@ -29,6 +29,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnBackToStartMenu = new System.Windows.Forms.Button();
             this.btnAddRowColumn = new System.Windows.Forms.Button();
@@ -42,14 +43,27 @@
             this.txtbxExpression = new System.Windows.Forms.TextBox();
             this.lblRowsAmount = new System.Windows.Forms.Label();
             this.lblColumnsAmount = new System.Windows.Forms.Label();
+            this.btnExpValFormat = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize) (this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.AllowUserToResizeColumns = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView1.Location = new System.Drawing.Point(1, 60);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridView1.Size = new System.Drawing.Size(798, 390);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
@@ -165,12 +179,23 @@
             this.lblColumnsAmount.TabIndex = 12;
             this.lblColumnsAmount.Text = "Columns: 0";
             // 
+            // btnExpValFormat
+            // 
+            this.btnExpValFormat.Location = new System.Drawing.Point(251, 4);
+            this.btnExpValFormat.Name = "btnExpValFormat";
+            this.btnExpValFormat.Size = new System.Drawing.Size(168, 50);
+            this.btnExpValFormat.TabIndex = 13;
+            this.btnExpValFormat.Text = "Show expression format";
+            this.btnExpValFormat.UseVisualStyleBackColor = true;
+            this.btnExpValFormat.Click += new System.EventHandler(this.btnExpValFormat_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnExpValFormat);
             this.Controls.Add(this.lblColumnsAmount);
             this.Controls.Add(this.lblRowsAmount);
             this.Controls.Add(this.txtbxExpression);
@@ -190,6 +215,8 @@
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button btnExpValFormat;
 
         private System.Windows.Forms.Label lblColumnsAmount;
         private System.Windows.Forms.Label lblRowsAmount;
