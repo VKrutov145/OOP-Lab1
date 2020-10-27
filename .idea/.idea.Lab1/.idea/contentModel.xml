@@ -8,9 +8,11 @@
       <e p="Lab1" t="IncludeRecursive">
         <e p="App.config" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
+        <e p="Data.cs" t="Include" />
         <e p="Form1.cs" t="Include" />
         <e p="Form1.Designer.cs" t="Include" />
         <e p="Form1.resx" t="Include" />
+        <e p="HelpfulFunctions.cs" t="Include" />
         <e p="Lab1.csproj" t="IncludeRecursive" />
         <e p="Parser.cs" t="Include" />
         <e p="Program.cs" t="Include" />

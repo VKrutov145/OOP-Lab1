@@ -38,6 +38,10 @@
             this.lblNumberOfAddedDeletedRowsColumns = new System.Windows.Forms.Label();
             this.btnNRows = new System.Windows.Forms.Button();
             this.btnNColumns = new System.Windows.Forms.Button();
+            this.btnStopEditingRowsColumns = new System.Windows.Forms.Button();
+            this.txtbxExpression = new System.Windows.Forms.TextBox();
+            this.lblRowsAmount = new System.Windows.Forms.Label();
+            this.lblColumnsAmount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize) (this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,6 +52,8 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(798, 390);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
+            this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             // 
             // btnBackToStartMenu
             // 
@@ -63,7 +69,7 @@
             // 
             this.btnAddRowColumn.Location = new System.Drawing.Point(62, 4);
             this.btnAddRowColumn.Name = "btnAddRowColumn";
-            this.btnAddRowColumn.Size = new System.Drawing.Size(160, 50);
+            this.btnAddRowColumn.Size = new System.Drawing.Size(178, 50);
             this.btnAddRowColumn.TabIndex = 2;
             this.btnAddRowColumn.Text = "Додати стовпці/рядки";
             this.btnAddRowColumn.UseVisualStyleBackColor = true;
@@ -71,6 +77,7 @@
             // 
             // rbtnAddRowColumn
             // 
+            this.rbtnAddRowColumn.Checked = true;
             this.rbtnAddRowColumn.Location = new System.Drawing.Point(62, 8);
             this.rbtnAddRowColumn.Name = "rbtnAddRowColumn";
             this.rbtnAddRowColumn.Size = new System.Drawing.Size(29, 22);
@@ -85,7 +92,6 @@
             this.rbtnDeleteRowColumn.Name = "rbtnDeleteRowColumn";
             this.rbtnDeleteRowColumn.Size = new System.Drawing.Size(37, 22);
             this.rbtnDeleteRowColumn.TabIndex = 4;
-            this.rbtnDeleteRowColumn.TabStop = true;
             this.rbtnDeleteRowColumn.Text = "—";
             this.rbtnDeleteRowColumn.UseVisualStyleBackColor = true;
             // 
@@ -95,7 +101,7 @@
             this.txtbxNRowsColumns.Name = "txtbxNRowsColumns";
             this.txtbxNRowsColumns.Size = new System.Drawing.Size(95, 20);
             this.txtbxNRowsColumns.TabIndex = 5;
-            this.txtbxNRowsColumns.Text = "0";
+            this.txtbxNRowsColumns.Text = "1";
             // 
             // lblNumberOfAddedDeletedRowsColumns
             // 
@@ -126,12 +132,49 @@
             this.btnNColumns.UseVisualStyleBackColor = true;
             this.btnNColumns.Click += new System.EventHandler(this.btnNColumns_Click);
             // 
+            // btnStopEditingRowsColumns
+            // 
+            this.btnStopEditingRowsColumns.Location = new System.Drawing.Point(228, 8);
+            this.btnStopEditingRowsColumns.Name = "btnStopEditingRowsColumns";
+            this.btnStopEditingRowsColumns.Size = new System.Drawing.Size(12, 46);
+            this.btnStopEditingRowsColumns.TabIndex = 9;
+            this.btnStopEditingRowsColumns.Text = "OK";
+            this.btnStopEditingRowsColumns.UseVisualStyleBackColor = true;
+            this.btnStopEditingRowsColumns.Click += new System.EventHandler(this.btnStopEditingRowsColumns_Click);
+            // 
+            // txtbxExpression
+            // 
+            this.txtbxExpression.Location = new System.Drawing.Point(62, 31);
+            this.txtbxExpression.Name = "txtbxExpression";
+            this.txtbxExpression.Size = new System.Drawing.Size(726, 20);
+            this.txtbxExpression.TabIndex = 10;
+            // 
+            // lblRowsAmount
+            // 
+            this.lblRowsAmount.Location = new System.Drawing.Point(1, 432);
+            this.lblRowsAmount.Name = "lblRowsAmount";
+            this.lblRowsAmount.Size = new System.Drawing.Size(66, 18);
+            this.lblRowsAmount.TabIndex = 11;
+            this.lblRowsAmount.Text = "Rows: 0";
+            // 
+            // lblColumnsAmount
+            // 
+            this.lblColumnsAmount.Location = new System.Drawing.Point(62, 432);
+            this.lblColumnsAmount.Name = "lblColumnsAmount";
+            this.lblColumnsAmount.Size = new System.Drawing.Size(74, 18);
+            this.lblColumnsAmount.TabIndex = 12;
+            this.lblColumnsAmount.Text = "Columns: 0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblColumnsAmount);
+            this.Controls.Add(this.lblRowsAmount);
+            this.Controls.Add(this.txtbxExpression);
+            this.Controls.Add(this.btnStopEditingRowsColumns);
             this.Controls.Add(this.btnNColumns);
             this.Controls.Add(this.btnNRows);
             this.Controls.Add(this.lblNumberOfAddedDeletedRowsColumns);
@@ -147,6 +190,13 @@
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Label lblColumnsAmount;
+        private System.Windows.Forms.Label lblRowsAmount;
+
+        private System.Windows.Forms.TextBox txtbxExpression;
+
+        private System.Windows.Forms.Button btnStopEditingRowsColumns;
 
         private System.Windows.Forms.Button btnNColumns;
         private System.Windows.Forms.Button btnNRows;
