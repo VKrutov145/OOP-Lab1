@@ -54,6 +54,7 @@ namespace Lab1
             this.btnAboutProgramme.TabIndex = 1;
             this.btnAboutProgramme.Text = "Про програму";
             this.btnAboutProgramme.UseVisualStyleBackColor = true;
+            this.btnAboutProgramme.Click += new System.EventHandler(this.btnAboutProgramme_Click);
             // 
             // btnExit
             // 

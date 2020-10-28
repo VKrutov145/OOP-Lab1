@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Runtime.Remoting.Channels;
 using System.Windows.Forms;
 using System.Xml.Schema;
@@ -305,13 +306,11 @@ namespace Lab1
             if (token == "(")
             {
                 GetToken();
-                EvalExp7(out result);   
                 EvalExp2(out result);
                 if (token != ")")
                 {
                     SyntaxErr(Errors.UNBALPARENS);
                 }
-
                 GetToken();
             }
             else
@@ -342,12 +341,18 @@ namespace Lab1
                     }
                     case "MMAX":
                     {
-                        result = 0.0;
+                        expIndex++;
+                        result = GetMaxElementInArray();
+                        expIndex++;
+                        GetToken();
                         break;
                     }
                     case "MMIN":
                     {
-                        result = 0.0;
+                        expIndex++;
+                        result = GetMinElementInArray();
+                        expIndex++;
+                        GetToken();
                         break;
                     }
                     default:
@@ -362,6 +367,74 @@ namespace Lab1
             {
                 Atom(out result);
             }
+        }
+
+        private double GetMaxElementInArray()
+        {
+            List<double> array = new List<double>();
+
+            int openedBrackets = 1;
+            int closedBrackets = 0;
+
+            string mainExp = exp;
+            int mainExpIndex = expIndex;
+            
+            do
+            {
+                array.Add(GetResultBeforeComma(ref openedBrackets, ref closedBrackets, ref mainExpIndex));
+                
+                exp = mainExp;
+                expIndex = mainExpIndex;
+            }
+            while (openedBrackets != closedBrackets);
+
+            double max = array[0];
+            for (int i = 1; i < array.Count; i++)
+            {
+                if (max <= array[i])
+                {
+                    max = array[i];
+                }
+            }
+
+            exp = mainExp;
+            expIndex = mainExpIndex;
+            
+            return max;
+        }
+        
+        private double GetMinElementInArray()
+        {
+            List<double> array = new List<double>();
+
+            int openedBrackets = 1;
+            int closedBrackets = 0;
+
+            string mainExp = exp;
+            int mainExpIndex = expIndex;
+            
+            do
+            {
+                array.Add(GetResultBeforeComma(ref openedBrackets, ref closedBrackets, ref mainExpIndex));
+                
+                exp = mainExp;
+                expIndex = mainExpIndex;
+            }
+            while (openedBrackets != closedBrackets);
+
+            double min = array[0];
+            for (int i = 1; i < array.Count; i++)
+            {
+                if (min > array[i])
+                {
+                    min = array[i];
+                }
+            }
+
+            exp = mainExp;
+            expIndex = mainExpIndex;
+            
+            return min;
         }
 
         void Atom(out double result)
@@ -434,75 +507,112 @@ namespace Lab1
         }
 
         void GetToken()
+                 {
+                     tokenType = Types.NONE;
+                     token = "";
+                     
+                     if (expIndex == exp.Length)
+                     {
+                         return;
+                     }
+         
+                     while (expIndex < exp.Length && Char.IsWhiteSpace(exp[expIndex]))
+                     {
+                         ++expIndex;
+                     }
+         
+                     if (expIndex == exp.Length)
+                     {
+                         return;
+                     }
+         
+                     if (IsDelim(exp[expIndex]))
+                     {
+                         token += exp[expIndex];
+                         expIndex++;
+                         tokenType = Types.DELIMITER;
+                     }
+                     else if (Char.IsLetter(exp[expIndex]))
+                     {
+                         if (checkExpForFucntion(expIndex) == true)
+                         {
+                             while (!IsDelim(exp[expIndex]))
+                             {
+                                 token += exp[expIndex];
+                                 expIndex++;
+                                 if (expIndex >= exp.Length)
+                                 {
+                                     SyntaxErr(Errors.SYNTAX);
+                                 }
+                             }
+                             tokenType = Types.FUNCTION;
+                         }
+                         else
+                         {
+                             while (!IsDelim(exp[expIndex]))
+                             {
+                                 token += exp[expIndex];
+                                 expIndex++;
+                                 if (expIndex >= exp.Length)
+                                 {
+                                     break;
+                                 }
+                             }
+                             tokenType = Types.VARIABLE;
+                         }
+                     }
+                     else if (Char.IsDigit(exp[expIndex]))
+                     {
+                         while (!IsDelim(exp[expIndex]))
+                         {
+                             token += exp[expIndex];
+                             expIndex++;
+                             if (expIndex >= exp.Length)
+                             {
+                                 break;
+                             }
+                         }
+                         tokenType = Types.NUMBER;
+                     }
+                 }
+
+        double GetResultBeforeComma(ref int openedBrackets, ref int closedBrackets, ref int mainExpIndex)
         {
-            tokenType = Types.NONE;
-            token = "";
-            
-            if (expIndex == exp.Length)
+            string partialExpression = "";
+            //GetTokenWithoutComma();
+            do
             {
-                return;
-            }
-
-            while (expIndex < exp.Length && Char.IsWhiteSpace(exp[expIndex]))
-            {
-                ++expIndex;
-            }
-
-            if (expIndex == exp.Length)
-            {
-                return;
-            }
-
-            if (IsDelim(exp[expIndex]))
-            {
-                token += exp[expIndex];
-                expIndex++;
-                tokenType = Types.DELIMITER;
-            }
-            else if (Char.IsLetter(exp[expIndex]))
-            {
-                if (checkExpForFucntion(expIndex) == true)
+                if (exp[expIndex] == '(')
                 {
-                    while (!IsDelim(exp[expIndex]))
-                    {
-                        token += exp[expIndex];
-                        expIndex++;
-                        if (expIndex >= exp.Length)
-                        {
-                            SyntaxErr(Errors.SYNTAX);
-                        }
-                    }
-                    tokenType = Types.FUNCTION;
+                    openedBrackets++;
+                }
+
+                if (exp[expIndex] == ')')
+                {
+                    closedBrackets++;
+                }
+                
+
+                if (openedBrackets != closedBrackets)
+                {
+                    partialExpression += exp[expIndex];
+                    ++expIndex;
+                    ++mainExpIndex;
                 }
                 else
                 {
-                    while (!IsDelim(exp[expIndex]))
-                    {
-                        token += exp[expIndex];
-                        expIndex++;
-                        if (expIndex >= exp.Length)
-                        {
-                            break;
-                        }
-                    }
-                    tokenType = Types.VARIABLE;
+                    break;
                 }
-            }
-            else if (Char.IsDigit(exp[expIndex]))
-            {
-                while (!IsDelim(exp[expIndex]))
-                {
-                    token += exp[expIndex];
-                    expIndex++;
-                    if (expIndex >= exp.Length)
-                    {
-                        break;
-                    }
-                }
-                tokenType = Types.NUMBER;
-            }
-        }
+            } while (",;|".IndexOf(exp[expIndex]) == -1);
 
+            if (openedBrackets != closedBrackets)
+            {
+                mainExpIndex++;
+            }
+
+            return Evaluate(partialExpression);
+        }
+        
         bool IsDelim(char c)
         {
             if (("+-/*%^=()".IndexOf(c) != -1))

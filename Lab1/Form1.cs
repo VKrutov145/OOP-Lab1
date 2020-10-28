@@ -176,7 +176,10 @@ namespace Lab1
 
                         if (dataGridView1.Columns.Count == 0)
                         {
-                            gridData1.DeleteRow();
+                            for (int i = 0; i < gridData1.GetRowAmount(); i++)
+                            {
+                                gridData1.DeleteRow();   
+                            }
                         }
                         UpdateLabelAboutRowsAndColumns();
                     }
@@ -200,7 +203,6 @@ namespace Lab1
             btnStopEditingRowsColumns.Hide();
         }
         
-        
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             HideRowsAndColumnsEditingPanel();
@@ -210,8 +212,8 @@ namespace Lab1
             txtbxExpression.Clear();
             
             btnExpValFormat.Height = INTERFACEOBJECTSHEIGHT/2;
-
-            //dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = txtbxExpression.Text;
+            
+            btnClearAll.Height = INTERFACEOBJECTSHEIGHT/2;
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -224,25 +226,75 @@ namespace Lab1
                 gridData1.ChangeCellExpression(colIndex,rowIndex,cellText);
 
                 dataGridView1.Rows[rowIndex].Cells[colIndex].Value = gridData1.GetCellValue(colIndex, rowIndex);
-            }
+            } 
+            
+            //txtbxExpression.Text = dataGridView1.Rows[rowIndex].Cells[colIndex].Value.ToString();
         }
 
         private void btnExpValFormat_Click(object sender, EventArgs e)
         {
             txtbxExpression.Hide();
-            btnExpValFormat.Height = INTERFACEOBJECTSHEIGHT;
+            
+            btnClearAll.Height = INTERFACEOBJECTSHEIGHT;
+            
             btnAddRowColumn.Height = INTERFACEOBJECTSHEIGHT;
+            
+            btnExpValFormat.Height = INTERFACEOBJECTSHEIGHT;
 
             if (FOD == FormatOfData.VALUE)
             {
                 btnExpValFormat.Text = "Show value format";
+                for (int i = 0; i < gridData1.GetColAmount(); i++)
+                {
+                    for (int j = 0; j < gridData1.GetRowAmount(); j++)
+                    {
+                        dataGridView1.Rows[j].Cells[i].Value = gridData1.GetCellExpression(i, j);
+                    }
+                }
                 FOD = FormatOfData.EXPRESSION;
             }
             else
             {
                 btnExpValFormat.Text = "Show expression format";
+                for (int i = 0; i < gridData1.GetColAmount(); i++)
+                {
+                    for (int j = 0; j < gridData1.GetRowAmount(); j++)
+                    {
+                        dataGridView1.Rows[j].Cells[i].Value = gridData1.GetCellValue(i, j);
+                    }
+                }
                 FOD = FormatOfData.VALUE;
             }
+        }
+        
+        private void txtbxExpression_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnClearAll_Click(object sender, EventArgs e)
+        {
+            txtbxExpression.Hide();
+            
+            btnClearAll.Height = INTERFACEOBJECTSHEIGHT;
+            
+            btnAddRowColumn.Height = INTERFACEOBJECTSHEIGHT;
+            
+            btnExpValFormat.Height = INTERFACEOBJECTSHEIGHT;
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure?", "Delete all data", MessageBoxButtons.YesNo);
+            if(dialogResult == DialogResult.Yes)
+            {
+                for (int i = 0; i < gridData1.GetColAmount(); i++)
+                {
+                    for (int j = 0; j < gridData1.GetRowAmount(); j++)
+                    {
+                        gridData1.DeleteCell(i,j);
+                        dataGridView1.Rows[j].Cells[i].Value = "";
+                    }
+                }
+            }
+            
         }
     }
 }

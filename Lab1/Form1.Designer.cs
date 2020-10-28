@@ -44,6 +44,7 @@
             this.lblRowsAmount = new System.Windows.Forms.Label();
             this.lblColumnsAmount = new System.Windows.Forms.Label();
             this.btnExpValFormat = new System.Windows.Forms.Button();
+            this.btnClearAll = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize) (this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -162,6 +163,7 @@
             this.txtbxExpression.Name = "txtbxExpression";
             this.txtbxExpression.Size = new System.Drawing.Size(726, 20);
             this.txtbxExpression.TabIndex = 10;
+            this.txtbxExpression.TextChanged += new System.EventHandler(this.txtbxExpression_TextChanged);
             // 
             // lblRowsAmount
             // 
@@ -189,12 +191,23 @@
             this.btnExpValFormat.UseVisualStyleBackColor = true;
             this.btnExpValFormat.Click += new System.EventHandler(this.btnExpValFormat_Click);
             // 
+            // btnClearAll
+            // 
+            this.btnClearAll.Location = new System.Drawing.Point(425, 4);
+            this.btnClearAll.Name = "btnClearAll";
+            this.btnClearAll.Size = new System.Drawing.Size(168, 50);
+            this.btnClearAll.TabIndex = 14;
+            this.btnClearAll.Text = "Clear All";
+            this.btnClearAll.UseVisualStyleBackColor = true;
+            this.btnClearAll.Click += new System.EventHandler(this.btnClearAll_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnClearAll);
             this.Controls.Add(this.btnExpValFormat);
             this.Controls.Add(this.lblColumnsAmount);
             this.Controls.Add(this.lblRowsAmount);
@@ -215,6 +228,8 @@
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button btnClearAll;
 
         private System.Windows.Forms.Button btnExpValFormat;
 

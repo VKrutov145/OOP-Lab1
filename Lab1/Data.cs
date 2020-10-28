@@ -123,6 +123,11 @@ namespace Lab1
         {
             return gridData[indexX][indexY].Item2;
         }
+
+        public void DeleteCell(int indexX, int indexY)
+        {
+            gridData[indexX][indexY] = new Tuple<string, string>(null,null);
+        }
     }
     
 }
