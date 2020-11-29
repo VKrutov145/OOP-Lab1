@@ -5,7 +5,7 @@ namespace Lab1
 {
     public partial class StartMenuForm : Form
     {
-        Form1 gridForm1 = new Form1();
+        private Form1 gridForm1 = new Form1();
         public StartMenuForm()
         {
             InitializeComponent();

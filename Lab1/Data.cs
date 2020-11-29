@@ -128,6 +128,21 @@ namespace Lab1
         {
             gridData[indexX][indexY] = new Tuple<string, string>(null,null);
         }
+
+        public void UpdateAllCells()
+        {
+            for (int j = 0; j < rowAmount; j++)
+            {
+                for (int i = 0; i < colAmount; i++)
+                {
+                    if (gridData[i][j].Item1 != null)
+                     {
+                         ChangeCellExpression(i,j,GetCellExpression(i,j));
+                         gridData[i][j] = new Tuple<string, string>(gridData[i][j].Item1,Parser1.Evaluate(gridData[i][j].Item1).ToString());
+                     }
+                }
+            }
+        }
     }
     
 }

@@ -224,9 +224,34 @@ namespace Lab1
             {
                 string cellText = dataGridView1.Rows[rowIndex].Cells[colIndex].Value.ToString();
                 gridData1.ChangeCellExpression(colIndex,rowIndex,cellText);
+            }
 
-                dataGridView1.Rows[rowIndex].Cells[colIndex].Value = gridData1.GetCellValue(colIndex, rowIndex);
-            } 
+            for (int REPEATS = 1; REPEATS <= 2; REPEATS++)
+            {
+                gridData1.UpdateAllCells();
+                for (int j = 0; j < dataGridView1.Rows.Count; j++)
+                {
+                    for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                    {
+                        if (dataGridView1.Rows[j].Cells[i].Value != null)
+                        {
+                            if (FOD == FormatOfData.VALUE)
+                            {
+                                dataGridView1.Rows[j].Cells[i].Value = gridData1.GetCellValue(i,j);
+
+                            }
+                            else
+                            {
+                                dataGridView1.Rows[j].Cells[i].Value = gridData1.GetCellExpression(i,j);
+                            }
+                        }
+                        
+                        
+                    }
+                }
+            }
+
+            
             
             //txtbxExpression.Text = dataGridView1.Rows[rowIndex].Cells[colIndex].Value.ToString();
         }
@@ -234,13 +259,10 @@ namespace Lab1
         private void btnExpValFormat_Click(object sender, EventArgs e)
         {
             txtbxExpression.Hide();
-            
             btnClearAll.Height = INTERFACEOBJECTSHEIGHT;
-            
             btnAddRowColumn.Height = INTERFACEOBJECTSHEIGHT;
-            
             btnExpValFormat.Height = INTERFACEOBJECTSHEIGHT;
-
+            
             if (FOD == FormatOfData.VALUE)
             {
                 btnExpValFormat.Text = "Show value format";
