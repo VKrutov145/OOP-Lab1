@@ -5,6 +5,8 @@ namespace Lab1
 {
     public partial class StartMenuForm : Form
     {
+        private string filePath = @"C:\Users\PRO\Desktop\GridLab1.txt";
+        
         private Form1 gridForm1 = new Form1();
         public StartMenuForm()
         {
@@ -33,6 +35,16 @@ namespace Lab1
         private void btnExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            gridForm1.OpenFile(filePath);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            gridForm1.SaveFile();
         }
     }
 }

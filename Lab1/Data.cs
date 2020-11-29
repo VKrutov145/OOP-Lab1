@@ -136,10 +136,10 @@ namespace Lab1
                 for (int i = 0; i < colAmount; i++)
                 {
                     if (gridData[i][j].Item1 != null)
-                     {
-                         ChangeCellExpression(i,j,GetCellExpression(i,j));
-                         gridData[i][j] = new Tuple<string, string>(gridData[i][j].Item1,Parser1.Evaluate(gridData[i][j].Item1).ToString());
-                     }
+                    {
+                        ChangeCellExpression(i,j,GetCellExpression(i,j));
+                        gridData[i][j] = new Tuple<string, string>(gridData[i][j].Item1,Parser1.Evaluate(gridData[i][j].Item1).ToString());
+                    }
                 }
             }
         }

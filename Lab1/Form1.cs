@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -225,35 +226,27 @@ namespace Lab1
                 string cellText = dataGridView1.Rows[rowIndex].Cells[colIndex].Value.ToString();
                 gridData1.ChangeCellExpression(colIndex,rowIndex,cellText);
             }
-
-            for (int REPEATS = 1; REPEATS <= 2; REPEATS++)
+            
+            
+            gridData1.UpdateAllCells();
+            for (int j = 0; j < dataGridView1.Rows.Count; j++)
             {
-                gridData1.UpdateAllCells();
-                for (int j = 0; j < dataGridView1.Rows.Count; j++)
+                for (int i = 0; i < dataGridView1.Columns.Count; i++)
                 {
-                    for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                    if (dataGridView1.Rows[j].Cells[i].Value != null)
                     {
-                        if (dataGridView1.Rows[j].Cells[i].Value != null)
+                        if (FOD == FormatOfData.VALUE)
                         {
-                            if (FOD == FormatOfData.VALUE)
-                            {
-                                dataGridView1.Rows[j].Cells[i].Value = gridData1.GetCellValue(i,j);
+                            dataGridView1.Rows[j].Cells[i].Value = gridData1.GetCellValue(i,j);
 
-                            }
-                            else
-                            {
-                                dataGridView1.Rows[j].Cells[i].Value = gridData1.GetCellExpression(i,j);
-                            }
                         }
-                        
-                        
+                        else
+                        {
+                            dataGridView1.Rows[j].Cells[i].Value = gridData1.GetCellExpression(i,j);
+                        }
                     }
                 }
             }
-
-            
-            
-            //txtbxExpression.Text = dataGridView1.Rows[rowIndex].Cells[colIndex].Value.ToString();
         }
 
         private void btnExpValFormat_Click(object sender, EventArgs e)
@@ -317,6 +310,100 @@ namespace Lab1
                 }
             }
             
+        }
+
+        public void SaveFile()
+        {
+            
+        }
+
+        public void OpenFile(string path)
+        {
+            for (int a = 0; a < gridData1.GetColAmount(); a++)
+            {
+                for (int b = 0; b < gridData1.GetRowAmount(); b++)
+                {
+                    dataGridView1.Rows[b].Cells[a].Value = "";
+                    gridData1.DeleteCell(a,b);
+                    
+                }
+            }
+            for (int a = 0; a < gridData1.GetRowAmount(); a++)
+            {
+                dataGridView1.Columns.Remove(HelpfulFunctions.GetColNameFromIndex(a));
+                gridData1.DeleteRow();   
+            }
+            for (int a = 0; a < gridData1.GetColAmount(); a++)
+            {
+                dataGridView1.Rows.Remove(dataGridView1.Rows[a]);
+                gridData1.DeleteCol();   
+            }
+
+
+            if (!File.Exists(path))
+            {
+                throw new SystemException("THERE_IS_NO_FILE");
+            }
+
+            string fileData;
+            fileData = File.ReadAllText(path);
+            
+            gridData1.AddRow();
+            
+
+            int rowIterator = 0;
+            int colAmount = 0;
+            int rowAmount = 0;
+            int colIterator = 0;
+            
+            StringReader sr = new StringReader(fileData);
+            string line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                for (int i = 0; i < line.Length; i++)
+                {
+                    string cellText = "";
+                    while (i < line.Length && line[i] != '|')
+                    {
+                        cellText += line[i];
+                        i++;
+                    }
+                    
+                    if (i >= line.Length)
+                    {
+                        gridData1.AddRow();
+                        dataGridView1.Rows.Add(1);
+                        rowIterator++;
+                        colIterator = 0;
+                        break;
+                    }
+                    gridData1.AddCol();
+                    dataGridView1.Columns.Add(HelpfulFunctions.GetColNameFromIndex(colIterator), HelpfulFunctions.GetColNameFromIndex(colIterator));
+                    gridData1.ChangeCellExpression(colIterator,rowIterator,cellText);
+                    colIterator++;
+                }
+            }
+            dataGridView1.Rows.Add(1);
+            
+            gridData1.UpdateAllCells();
+            for (int j = 0; j < dataGridView1.Rows.Count; j++)
+            {
+                for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                {
+                    if (dataGridView1.Rows[j].Cells[i].Value != null)
+                    {
+                        if (FOD == FormatOfData.VALUE)
+                        {
+                            dataGridView1.Rows[j].Cells[i].Value = gridData1.GetCellValue(i,j);
+
+                        }
+                        else
+                        {
+                            dataGridView1.Rows[j].Cells[i].Value = gridData1.GetCellExpression(i,j);
+                        }
+                    }
+                }
+            }
         }
     }
 }
